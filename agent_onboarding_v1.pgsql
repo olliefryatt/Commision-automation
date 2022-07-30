@@ -73,15 +73,27 @@ df_4 as (
         end as agent_onboard_month_for_commissions,
         *
     from df_3
+),
+
+-- Group by month & aba
+df_5 as (
+    select 
+        aba_name, 
+        agent_onboard_month_for_commissions, 
+        count(*) as total_agents_onboarded, 
+        uuid_aba,
+        date_time
+    from df_4
+    left join calc_dates_1 on agent_onboard_month_for_commissions = calc_for_month
+    group by uuid_aba, aba_name, agent_onboard_month_for_commissions, date_time
+    order by aba_name, date_time desc
 )
 
-select 
-    aba_name, 
-    agent_onboard_month_for_commissions, 
-    count(*) as total_agents_onboarded, 
+select
+    aba_name,
     uuid_aba,
+    agent_onboard_month_for_commissions,
     date_time
-from df_4
-left join calc_dates_1 on agent_onboard_month_for_commissions = calc_for_month
-group by uuid_aba, aba_name, agent_onboard_month_for_commissions, date_time
-order by aba_name, date_time desc
+from df_5
+-- Remove April as it includes all previous agents (i.e. Jan, Feb, Mar)
+where agent_onboard_month_for_commissions <> 'April'
