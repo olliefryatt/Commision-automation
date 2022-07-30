@@ -92,6 +92,7 @@ df_5 as (
 select
     aba_name,
     uuid_aba,
+    total_agents_onboarded,
     agent_onboard_month_for_commissions,
     date_time
 from df_5
