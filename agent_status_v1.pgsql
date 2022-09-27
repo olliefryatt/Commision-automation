@@ -1,4 +1,5 @@
 
+
 -- Set days where we wwant to calculated commisiosn on
 with calc_dates_1 (calc_for_month, date_time) AS (
     values
@@ -70,6 +71,3 @@ df_agent_status_4 as (
 
 select *
 from df_agent_status_4
-
-
-
